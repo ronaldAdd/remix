@@ -7,6 +7,7 @@ import { createRequestHandler } from "@remix-run/express";
 import * as build from "./build/server/index.js";
 import { fileURLToPath } from 'url';
 import { log } from "console";
+import cors from 'cors';
 
 const app = express();
 
@@ -35,6 +36,7 @@ let orders = [ // Sample orders data
     date: '2025-04-07',
   }
 ];
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.static("build/client"));

@@ -32,7 +32,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://remix-omega-eight.vercel.app/login', {
+      const response = await axios.post('https://my-project-name.vercel.app/login', {
         username: formData.username,
         password: formData.password,
       });
