@@ -32,7 +32,7 @@ export default function Signin() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/login', {
+      const response = await axios.post('http://localhost/login', {
         username: formData.username,
         password: formData.password,
       });
