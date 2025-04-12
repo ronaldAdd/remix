@@ -3,10 +3,8 @@ import path from 'path';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { createRequestHandler } from "@remix-run/express";
-// notice that the result of `remix vite:build` is "just a module"
-import * as build from "./build/server/index.js";
+import * as build from "../build/server/index.js"; // Perhatikan path
 import { fileURLToPath } from 'url';
-import { log } from "console";
 import cors from 'cors';
 
 const app = express();
@@ -17,8 +15,15 @@ const __dirname = path.dirname(__filename);
 
 // Secret key untuk JWT
 const SECRET_KEY = 'r4hasi4';
-let users = [{username:'ronald' , password:'$2a$12$eybs332fCO1qjEgyR6ThVuuo3aPNoZN0/p8bOioDUO9G9wFclYSxC'}]; // Tempat sementara untuk data pengguna
-let orders = [ // Sample orders data
+
+let users = [
+  {
+    username: 'ronald',
+    password: '$2a$12$eybs332fCO1qjEgyR6ThVuuo3aPNoZN0/p8bOioDUO9G9wFclYSxC'
+  }
+];
+
+let orders = [
   {
     orderId: '1234',
     productName: 'Product 1',
@@ -36,16 +41,15 @@ let orders = [ // Sample orders data
     date: '2025-04-07',
   }
 ];
+
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-app.use(express.static("build/client"));
+app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "../build/client")));
 
 // Login endpoint untuk autentikasi
 app.post('/login', async (req, res) => {
-  
   const { username, password } = req.body;
-
   const user = users.find(u => u.username === username);
 
   if (!user) {
@@ -61,7 +65,7 @@ app.post('/login', async (req, res) => {
   return res.json({ token });
 });
 
-// Protected route yang membutuhkan JWT untuk mengaksesnya
+// Protected route yang membutuhkan JWT
 app.get('/protected', (req, res) => {
   const token = req.headers['authorization']?.split(' ')[1];
 
@@ -77,10 +81,8 @@ app.get('/protected', (req, res) => {
   });
 });
 
-
-// and your app is "just a request handler"
+// Remix handler
 app.all("*", createRequestHandler({ build }));
 
-app.listen(3000, () => {
-  console.log("App listening on http://localhost:3000");
-});
+// ⛔ Jangan pakai app.listen di Vercel!
+export default app;
