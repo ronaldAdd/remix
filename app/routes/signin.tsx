@@ -32,7 +32,7 @@ export default function Signin() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost/login', {
+      const response = await axios.post('/login', {
         username: formData.username,
         password: formData.password,
       });
@@ -41,9 +41,8 @@ export default function Signin() {
       localStorage.setItem('token', response.data.token);
 
       // Redirect ke dashboard setelah login sukses
-      console.log(response,'response');
       
-      // navigate('/dashboard');
+      navigate('/dashboard');
     } catch (err) {
       setError('Login gagal. Cek kredensial Anda.');
     }
