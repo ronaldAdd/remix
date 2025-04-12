@@ -8,7 +8,7 @@ interface LoginForm {
   password: string;
 }
 
-export default function Login() {
+export default function Signin() {
   // State dengan tipe LoginForm
   const [formData, setFormData] = useState<LoginForm>({
     username: '',
@@ -32,7 +32,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://remix-omega-eight.vercel.app/login', {
+      const response = await axios.post('http://localhost:3000/login', {
         username: formData.username,
         password: formData.password,
       });
@@ -41,7 +41,9 @@ export default function Login() {
       localStorage.setItem('token', response.data.token);
 
       // Redirect ke dashboard setelah login sukses
-      navigate('/dashboard');
+      console.log(response,'response');
+      
+      // navigate('/dashboard');
     } catch (err) {
       setError('Login gagal. Cek kredensial Anda.');
     }
